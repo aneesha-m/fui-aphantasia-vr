@@ -15,6 +15,9 @@ using UnityEngine.UI;
 public class GoogleVoiceSpeech : MonoBehaviour {
 
 		public Text TextBox;
+        public GameObject terrain;
+        public GameObject ocean;
+        //public GameObject trees;
 
 		struct ClipData
 		{
@@ -35,6 +38,8 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+                terrain.SetActive(false);
+                ocean.SetActive(false);
 				//Check if there is at least one microphone connected
 				if(Microphone.devices.Length <= 0)
 				{
@@ -113,13 +118,17 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 										var jsonresponse = SimpleJSON.JSON.Parse(Response);
 
 										if (jsonresponse != null) {		
-												string resultString = jsonresponse ["result"] [0].ToString ();
+												string resultString = jsonresponse ["results"] [0].ToString ();
 												var jsonResults = SimpleJSON.JSON.Parse (resultString);
 
-												string transcripts = jsonResults ["alternative"] [0] ["transcript"].ToString ();
+												string transcripts = jsonResults ["alternatives"] [0] ["transcript"].ToString ();
 
 												Debug.Log ("transcript string: " + transcripts );
-												TextBox.text = transcripts;
+                                                if(transcripts.Contains("beach")){
+                                                        terrain.SetActive(true);
+                                                        ocean.SetActive(true);
+                                                }                                                                                
+												//TextBox.text = transcripts;
 
 										}
 										goAudioSource.Play(); //Playback the recorded audio
@@ -178,6 +187,7 @@ public class GoogleVoiceSpeech : MonoBehaviour {
             {
                 var result = streamReader.ReadToEnd();
                 Debug.Log("Response:" + result);
+                return result;
 
             }
         
