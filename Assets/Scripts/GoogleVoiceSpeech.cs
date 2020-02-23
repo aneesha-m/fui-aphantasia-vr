@@ -17,7 +17,10 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 		public Text TextBox;
         public GameObject terrain;
         public GameObject ocean;
-        //public GameObject trees;
+        public GameObject table;
+        public GameObject record;
+        //public GameObject stop;
+        public Text btntxt = null;
 
 		struct ClipData
 		{
@@ -38,8 +41,11 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-                terrain.SetActive(false);
-                ocean.SetActive(false);
+                // terrain.SetActive(false);
+                // ocean.SetActive(false);
+                // table.SetActive(false);
+				//stop.SetActive(false);
+				btntxt.text = "Record";
 				//Check if there is at least one microphone connected
 				if(Microphone.devices.Length <= 0)
 				{
@@ -66,7 +72,7 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 				}
 	}
 
-		void OnGUI() 
+		public void onRecord() 
 		{
 				//If there is a microphone
 				if(micConnected)
@@ -75,18 +81,23 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 						if(!Microphone.IsRecording(null))
 						{
 								//Case the 'Record' button gets pressed
-								if(GUI.Button(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Record"))
-								{
+								//if(GUI.Button(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Record"))
+								//{
 										//Start recording and store the audio captured from the microphone at the AudioClip in the AudioSource
 										goAudioSource.clip = Microphone.Start( null, true, 7, maxFreq); //Currently set for a 7 second clip
-								}
+										btntxt.text = "Stop";
+										//stop.SetActive(true);
+										//record.SetActive(false);
 						}
 						else //Recording is in progress
 						{
 								
 								//Case the 'Stop and Play' button gets pressed
-								if(GUI.Button(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Stop and Play!"))
-								{
+								//if(GUI.Button(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Stop and Play!"))
+								//{
+										//record.SetActive(true);
+										//stop.SetActive(false);
+										btntxt.text = "Record";
 										float filenameRand = UnityEngine.Random.Range (0.0f, 10.0f);
 
 										string filename = "testing" + filenameRand;
@@ -127,6 +138,9 @@ public class GoogleVoiceSpeech : MonoBehaviour {
                                                 if(transcripts.Contains("beach")){
                                                         terrain.SetActive(true);
                                                         ocean.SetActive(true);
+                                                }   
+                                                if(transcripts.Contains("table")){
+                                                        table.SetActive(true);
                                                 }                                                                                
 												//TextBox.text = transcripts;
 
@@ -135,17 +149,17 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 
 										File.Delete(filePath); //Delete the Temporary Wav file
 									
-								}
+								//}
 
-								GUI.Label(new Rect(Screen.width/2-100, Screen.height/2+25, 200, 50), "Recording in progress...");
+								//GUI.Label(new Rect(Screen.width/2-100, Screen.height/2+25, 200, 50), "Recording in progress...");
 						}
 				}
-				else // No microphone
-				{
-						//Print a red "Microphone not connected!" message at the center of the screen
-						GUI.contentColor = Color.red;
-						GUI.Label(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Microphone not connected!");
-				}
+				// else // No microphone
+				// {
+				// 		//Print a red "Microphone not connected!" message at the center of the screen
+				// 		//GUI.contentColor = Color.red;
+				// 		//GUI.Label(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Microphone not connected!");
+				// }
 		}
 
     public string HttpUploadFile(string url, string file, string paramName, string contentType) {

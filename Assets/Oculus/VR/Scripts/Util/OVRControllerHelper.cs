@@ -94,7 +94,7 @@ public class OVRControllerHelper : MonoBehaviour
 				break;
 			default:
 #if UNITY_EDITOR || !UNITY_ANDROID
-				activeControllerType = ControllerType.Rift;
+				activeControllerType = ControllerType.QuestAndRiftS;
 #else
 				activeControllerType = ControllerType.GearVR;
 #endif
