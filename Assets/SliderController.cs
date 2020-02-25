@@ -17,10 +17,6 @@ public class SliderController : MonoBehaviour
         mainSlider.maxValue = 10;
         mainSlider.minValue = 0;
         
-        xr = sun.transform.rotation.x;
-        yr = sun.transform.rotation.y;
-        zr = sun.transform.rotation.z;
-        mainSlider.value = (xr + 10) / 10;
         mainSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
 
     }
@@ -28,11 +24,13 @@ public class SliderController : MonoBehaviour
     // Invoked when the value of the slider changes.
     public void ValueChangeCheck()
     {
-        //var rotationVector = transform.rotation.eulerAngles;
-        //rotationVector.x = mainSlider.value*10-10;
-        //sun.transform.rotation = Quaternion.Euler(rotationVector);
-        sun.transform.Rotate(mainSlider.value * 10 - 10, yr,zr,Space.Self);
-        
+        var rotationVector = sun.transform.rotation.eulerAngles;
+        rotationVector.x = mainSlider.value*10-10;
+        sun.transform.rotation = Quaternion.Euler(rotationVector);
+        //sun.transform.Rotate(mainSlider.value * 10 - 10, 0,0,Space.Self);
+        //sun.transform.rotation.z = mainSlider.value * 10 - 10;
+
+
         Debug.Log(mainSlider.value);
     }
 }
