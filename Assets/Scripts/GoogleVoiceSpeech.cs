@@ -16,9 +16,11 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 
 		public Text TextBox;
         public GameObject terrain;
+        public GameObject terrainContainer;
         public GameObject ocean;
         public GameObject table;
         public GameObject record;
+        CanvasGroup canvasGroup;
         //public GameObject stop;
         public Text btntxt = null;
 
@@ -41,12 +43,21 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-                // terrain.SetActive(false);
-                // ocean.SetActive(false);
+                 //terrain.SetActive(false);
+                 //ocean.SetActive(false);
                 // table.SetActive(false);
 				//stop.SetActive(false);
-				btntxt.text = "Record";
+                //rend = GetComponent<SpriteRenderer>();
+                //Color c = rend.material.color;
+                //c.a = 0f;
+                //rend.material.color = c;
+				//btntxt.text = "Record";
 				//Check if there is at least one microphone connected
+                canvasGroup = terrainContainer.GetComponent<CanvasGroup>();
+                float a = canvasGroup.alpha;
+                Debug.Log( "Material alpha: " + a);
+                canvasGroup.alpha = 0f;
+                Debug.Log( "Material alpha: " + canvasGroup.alpha);
 				if(Microphone.devices.Length <= 0)
 				{
 						//Throw a warning message at the console if there isn't
@@ -71,7 +82,14 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 						goAudioSource = this.GetComponent<AudioSource>();
 				}
 	}
-
+        IEnumerator FadeIn()
+        {
+            for (float f = 0.05f; f<=1; f+=0.05f)
+            {
+                canvasGroup.alpha = f;
+                yield return new WaitForSeconds(0.05f);
+            }
+        }
 		public void onRecord() 
 		{
 				//If there is a microphone
@@ -136,8 +154,9 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 
 												Debug.Log ("transcript string: " + transcripts );
                                                 if(transcripts.Contains("beach")){
-                                                        terrain.SetActive(true);
-                                                        ocean.SetActive(true);
+                                                        StartCoroutine("FadeIn");
+                                                        //terrain.SetActive(true);
+                                                        //ocean.SetActive(true);
                                                 }   
                                                 if(transcripts.Contains("table")){
                                                         table.SetActive(true);
