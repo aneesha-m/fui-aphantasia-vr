@@ -85,7 +85,7 @@ CGINCLUDE
 	sampler2D _ReflectionTex;
 	sampler2D _RefractionTex;
 	sampler2D _ShoreTex;
-	sampler2D_float _CameraDepthTexture;
+	sampler2D _CameraDepthTexture;
 
 	// colors in use
 	uniform float4 _RefrColorDepth;
