@@ -47,7 +47,11 @@ public class GoogleVoiceSpeech : MonoBehaviour {
         public GameObject floor;
         public GameObject smalltable;
         public GameObject lamp;
-    private bool canFade;
+        public GameObject walkingMan;
+        public GameObject birds;
+        public GameObject bgpeople;
+        public AudioSource bgMusic;
+        private bool canFade;
         private Color alphaColor;
         private float timeToFade = 1.0f;
 
@@ -55,26 +59,16 @@ public class GoogleVoiceSpeech : MonoBehaviour {
     void Start () {
                  terrain.SetActive(false);
                  ocean.SetActive(false);
-                 table.SetActive(false);
+                 //table.SetActive(false);
+                 walkingMan.SetActive(false);
+                 birds.SetActive(false);
+                 bgpeople.SetActive(false);
 
 
                 canFade = true;
                 alphaColor = frontwall.GetComponent<MeshRenderer>().material.color;
                 Debug.Log( "Material alpha: " + alphaColor);
-                //alphaColor.a = 0;
-                 // Material  mat = terrain.gameObject.GetComponent<Material>;
-				//stop.SetActive(false);
-                //rend = GetComponent<SpriteRenderer>();
-                //Color c = rend.material.color;
-                //c.a = 0f;
-                //rend.material.color = c;
-				//btntxt.text = "Record";
-				//Check if there is at least one microphone connected
-                //canvasGroup = terrainContainer.GetComponent<CanvasGroup>();
-                //float a = canvasGroup.alpha;
-                //Debug.Log( "Material alpha: " + a);
-                //canvasGroup.alpha = 0f;
-                //Debug.Log( "Material alpha: " + canvasGroup.alpha);
+
 				if(Microphone.devices.Length <= 0)
 				{
 						//Throw a warning message at the console if there isn't
@@ -99,14 +93,7 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 						goAudioSource = this.GetComponent<AudioSource>();
 				}
 	}
-        /*IEnumerator FadeIn()
-        {
-            for (float f = 0.05f; f<=1; f+=0.05f)
-            {
-                canvasGroup.alpha = f;
-                yield return new WaitForSeconds(0.05f);
-            }
-        }*/
+
     IEnumerator FadeOut()
     {
         for (float f = 1f; f >= 0; f -= 0.0025f)
@@ -121,12 +108,18 @@ public class GoogleVoiceSpeech : MonoBehaviour {
             ceiling.GetComponent<MeshRenderer>().material.color = alphaColor;
             floor.GetComponent<MeshRenderer>().material.color = alphaColor;
 
-            Debug.Log("Material alpha: " + alphaColor);
+            //Debug.Log("Material alpha: " + alphaColor);
             yield return new WaitForSeconds(0.05f);
         }
     }
-    public void onRecord() 
+    public async void onRecord() 
 		{
+
+				//StartCoroutine("SpeechToText");
+				SpeechToText();
+		}
+	//IEnumerator SpeechToText(){
+	async void SpeechToText(){
 				//If there is a microphone
 				if(micConnected)
 				{
@@ -188,14 +181,31 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 												string transcripts = jsonResults ["alternatives"] [0] ["transcript"].ToString ();
 
 												Debug.Log ("transcript string: " + transcripts );
-                                                if(transcripts.Contains("beach")){
+                                                if(transcripts.ToLower().Contains("beach")){
                                                         
                                                         terrain.SetActive(true);
                                                         ocean.SetActive(true);
-                                                        StartCoroutine("FadeOut");
+                                                        StartCoroutine("FadeOut");    
+                                                        // frontwall.SetActive(false);
+                                                        // backwall.SetActive(false);
+                                                        // rightwall.SetActive(false);
+                                                        // leftwall.SetActive(false);
+                                                        // ceiling.SetActive(false);
+                                                        // floor.SetActive(false);
+                                                        bgMusic.Play();                                           
+                                                }
+                                                if(transcripts.ToLower().Contains("walking")){
                                                         
-                                                
+                                                        walkingMan.SetActive(true);                                               
                                                 }   
+                                                if(transcripts.ToLower().Contains("birds") || transcripts.ToLower().Contains("seagulls")){
+                                                        
+                                                        birds.SetActive(true);                                               
+                                                }
+                                                if(transcripts.ToLower().Contains("people")){
+                                                        
+                                                        bgpeople.SetActive(true);                                               
+                                                }                                               
                                                 if(transcripts.Contains("table")){
                                                         table.SetActive(true);
                                                 }                                                                                
@@ -214,10 +224,11 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 				else // No microphone
 				{
                         btntxt.text = "No mic";
-				// 		//Print a red "Microphone not connected!" message at the center of the screen
-				// 		//GUI.contentColor = Color.red;
-				// 		//GUI.Label(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Microphone not connected!");
 				}
+				//yield return new WaitForSeconds(0.01f);
+				//await TimeSpan.FromSeconds(1);
+				// return true;
+				
 		}
 
     public string HttpUploadFile(string url, string file, string paramName, string contentType) {
