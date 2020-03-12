@@ -14,7 +14,7 @@ using UnityEngine.UI;
 
 public class GoogleVoiceSpeech : MonoBehaviour {
 
-		public Text TextBox;
+		
         public GameObject terrain;
         public GameObject ocean;
         public GameObject table;
@@ -45,8 +45,8 @@ public class GoogleVoiceSpeech : MonoBehaviour {
         public GameObject backwall;
         public GameObject ceiling;
         public GameObject floor;
-        public GameObject smalltable;
-        public GameObject lamp;
+        //public GameObject smalltable;
+        //public GameObject lamp;
         public GameObject walkingMan;
         public GameObject birds;
         public GameObject bgpeople;
@@ -130,7 +130,7 @@ public class GoogleVoiceSpeech : MonoBehaviour {
 								//if(GUI.Button(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Record"))
 								//{
 										//Start recording and store the audio captured from the microphone at the AudioClip in the AudioSource
-										goAudioSource.clip = Microphone.Start( null, true, 7, maxFreq); //Currently set for a 7 second clip
+										goAudioSource.clip = Microphone.Start( null, true, 10, maxFreq); //Currently set for a 7 second clip
 										btntxt.text = "Stop";
 										//stop.SetActive(true);
 										//record.SetActive(false);

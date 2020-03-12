@@ -5,7 +5,7 @@ using UnityEngine;
 public class Reposition : MonoBehaviour
 {
 	public GameObject obj;
-	public bool selected = false;
+	public GameObject rayCasterObj;
     void Start()
     {
         //transform.position = m_vecStart;
@@ -32,7 +32,7 @@ public class Reposition : MonoBehaviour
 
             var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(rayCasterObj.transform.position, rayCasterObj.transform.forward, out hit, 20))
             {
             	//if(hit.transform.CompareTag ("moveable")){
 		    	
@@ -44,6 +44,24 @@ public class Reposition : MonoBehaviour
 	                Debug.Log ("Object position after: " + obj.transform.position);
             	//}
             }
+        }
+    }
+    void onMoving(){
+		RaycastHit hit;
+
+        //var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+        if (Physics.Raycast(rayCasterObj.transform.position, rayCasterObj.transform.forward, out hit, 20))
+        {
+        	//if(hit.transform.CompareTag ("moveable")){
+	    	
+            	Debug.Log ("Raycast has hit object");
+                //hit.rigidbody.AddForceAtPosition(ray.direction * pokeForce, hit.point);
+                Debug.Log ("Object position before: " + obj.transform.position);
+                //obj.transform.Translate(hit.point*Time.deltaTime);
+                obj.transform.position = (hit.point);
+                Debug.Log ("Object position after: " + obj.transform.position);
+        	//}
         }
     }
  
