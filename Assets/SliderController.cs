@@ -16,7 +16,7 @@ public class SliderController : MonoBehaviour
         //x = sun.transform.get
         mainSlider.maxValue = 10;
         mainSlider.minValue = 0;
-        
+        mainSlider.value = 5;
         mainSlider.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
 
     }

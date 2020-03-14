@@ -57,8 +57,9 @@ using System.IO;
         // Grab the camera's view when this variable is true.
         bool grab;
         private int fileCounter;
+        public AudioSource click;
         // The "m_Display" is the GameObject whose Texture will be set to the captured image.
-        public Renderer m_Display;
+        //public Renderer m_Display;
 
         private void Update()
         {
@@ -97,7 +98,8 @@ using System.IO;
             
         }*/
         public void Capture()
-        {
+        {   
+            click.Play();
             ScreenCapture.CaptureScreenshot("Screenshot" + fileCounter + ".png");
             fileCounter++;
         }
