@@ -41,7 +41,7 @@ public class speechToScene : MonoBehaviour
     //A handle to the attached AudioSource
     private AudioSource goAudioSource;
 
-    public string apiKey;
+    //public string apiKey;
     public GameObject frontwall;
     public GameObject leftwall;
     public GameObject rightwall;
@@ -61,10 +61,14 @@ public class speechToScene : MonoBehaviour
     private bool canFade;
     private Color alphaColor;
     private float timeToFade = 1.0f;
+    public GameObject pov;
+    public GameObject houses;
+    //public AudioSource buttonDown;
+    //public AudioSource buttonUp;
 
-    public String[] story = new string[7] {"I was on a beach on a bright sunny morning.",
-        "I remember some palm trees there.", "and some people walking..","There was a large wooden table.", "And a bunch of flying birds above me.",
-        "I also saw a couple sitting", "And a wharf to the right."};
+    public String[] story = new string[] {"I was on a beach on a sunny morning.",
+        "I remember some palm trees there.", "and some people walking..","There was a big wooden table.", "And a bunch of flying birds above me.",
+        "I also saw a couple sitting", "And a wharf to the right.","There were houses on top of the terrain"};
 
     // Use this for initialization
     void Start()
@@ -81,6 +85,7 @@ public class speechToScene : MonoBehaviour
         pier.SetActive(false);
         couple.SetActive(false);
         canFade = true;
+        houses.SetActive(false);
         alphaColor = frontwall.GetComponent<MeshRenderer>().material.color;
         Debug.Log("Material alpha: " + alphaColor);
 
@@ -111,7 +116,7 @@ public class speechToScene : MonoBehaviour
 
     IEnumerator FadeOut()
     {
-        for (float f = 1f; f >= 0; f -= 0.0025f)
+        for (float f = 1f; f >= 0; f -= 0.0040f)
         {
             //Color c = rend.material.color;
             Color alphaColor = frontwall.GetComponent<MeshRenderer>().material.color;
@@ -147,6 +152,7 @@ public class speechToScene : MonoBehaviour
                 //if(GUI.Button(new Rect(Screen.width/2-100, Screen.height/2-25, 200, 50), "Record"))
                 //{
                 //Start recording and store the audio captured from the microphone at the AudioClip in the AudioSource
+                //buttonDown.Play();
                 goAudioSource.clip = Microphone.Start(null, true, 15, maxFreq); //Currently set for a 7 second clip
                 btntxt.text = "Stop";
                 //stop.SetActive(true);
@@ -160,6 +166,7 @@ public class speechToScene : MonoBehaviour
                 //{
                 //record.SetActive(true);
                 //stop.SetActive(false);
+                //buttonUp.Play();
                 btntxt.text = "Record";
                 float filenameRand = UnityEngine.Random.Range(0.0f, 10.0f);
 
@@ -183,7 +190,7 @@ public class speechToScene : MonoBehaviour
                 SavWav.Save(filePath, goAudioSource.clip); //Save a temporary Wav File
                 Debug.Log("Saving @ " + filePath);
                 //Insert your API KEY here.
-                string apiURL = "https://speech.googleapis.com/v1/speech:recognize?&key=AIzaSyDMdQ05ywB8_nAThAhjq2AieCvcz2xu4u0";
+                string apiURL = "https://speech.googleapis.com/v1/speech:recognize?&key=AIzaSyBQg87BmqhL1A1ogn78I34CnVT2qAx-0yc";
                 string Response;
 
                 Debug.Log("Uploading " + filePath);
@@ -215,7 +222,7 @@ public class speechToScene : MonoBehaviour
                         bgMusic.Play();
                         storyText.text = story[1];
                     }
-                    if (transcripts.ToLower().Contains("trees"))
+                    if (transcripts.ToLower().Contains("trees") || transcripts.ToLower().Contains("palm"))
                     {
                         palmTrees.SetActive(true);
                         storyText.text = story[2];
@@ -246,17 +253,21 @@ public class speechToScene : MonoBehaviour
                     if (transcripts.Contains("wharf") || transcripts.Contains("pier") || transcripts.Contains("right"))
                     {
                         pier.SetActive(true);
-                        //storyText.text = story[];
+                        storyText.text = story[7];
                     }
                     if (transcripts.Contains("couple"))
                     {
                         couple.SetActive(true);
                         storyText.text = story[6];
                     }
+                    if (transcripts.Contains("house") || transcripts.Contains("houses"))
+                    {
+                        houses.SetActive(true);                        
+                    }
                     //TextBox.text = transcripts;
 
                 }
-                goAudioSource.Play(); //Playback the recorded audio
+                //goAudioSource.Play(); //Playback the recorded audio
 
                 File.Delete(filePath); //Delete the Temporary Wav file
 

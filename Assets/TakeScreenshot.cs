@@ -4,54 +4,6 @@ using UnityEngine;
 using System.IO;
 
  
-/*public class TakeScreenshot : MonoBehaviour
-{
-    public int fileCounter;
-    //public KeyCode screenshotKey;
-
-    private Camera Camera
-    {
-        get
-        {
-            if (!_camera)
-            {
-                _camera = Camera.main;
-            }
-            return _camera;
-        }
-    }
-    private Camera _camera;
-
-    private void LateUpdate()
-    {
-        OVRInput.Update();
-        if (OVRInput.Get(OVRInput.Button.Start))
-        {
-            Capture();
-        }
-    }
-
-    public void Capture()
-    {
-        //RenderTexture activeRenderTexture = RenderTexture.active;
-        //RenderTexture.active = Camera.targetTexture;
-        int width = 256;
-        int height = 256;
-        Camera.Render();
-        Debug.Log("Here1");
-        Texture2D image = new Texture2D(width, height);
-        Debug.Log("Here2");
-        image.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-        image.Apply();
-        //RenderTexture.active = activeRenderTexture;
-
-        byte[] bytes = image.EncodeToPNG();
-        Destroy(image);
-
-        File.WriteAllBytes(Application.dataPath + "/Backgrounds/" + fileCounter + ".png", bytes);
-        Debug.Log(Application.dataPath + "/DCIM/" + fileCounter + ".png");
-        fileCounter++;
-    }*/
     public class TakeScreenshot : MonoBehaviour
     {
         // Grab the camera's view when this variable is true.
